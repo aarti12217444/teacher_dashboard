@@ -1,9 +1,10 @@
 const Assignment =
 require("../models/Assignment");
-
+const path = require("path");
 const addAssignment =
 async (req, res) => {
-
+console.log("BODY:", req.body);
+console.log("FILE:", req.file);
   try {
 
     const assignment =
@@ -23,6 +24,11 @@ async (req, res) => {
 
         dueTime:
           req.body.dueTime,
+
+        pdfFile:
+          req.file
+            ? req.file.filename
+            : "",
 
         status:
           req.body.status

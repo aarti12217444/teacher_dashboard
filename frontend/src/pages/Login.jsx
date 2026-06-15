@@ -6,6 +6,7 @@ import {
 
 import AuthLayout from "../layouts/AuthLayout";
 import { loginTeacher } from "../services/authService";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
 
@@ -16,10 +17,19 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const handleSubmit = async (e) => {
 
     e.preventDefault()
+    if (!captchaValue) {
+
+      alert(
+        "Please verify captcha"
+      );
+
+      return;
+    }
 
     try {
 
@@ -78,8 +88,9 @@ const Login = () => {
         </div>
 
       )}
-
+      
       <form
+      
         onSubmit={handleSubmit}
         className="space-y-5"
       >
@@ -104,6 +115,22 @@ const Login = () => {
           className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
+        <Link
+          to="/forgot-password"
+          className="block text-right text-blue-600 hover:underline text-sm"
+        >
+          Forgot Password?
+        </Link>
+
+        <ReCAPTCHA
+          sitekey={
+            import.meta.env
+              .VITE_RECAPTCHA_SITE_KEY
+          }
+          onChange={(value) =>
+            setCaptchaValue(value)
+          }
+        />
         <button
           type="submit"
           disabled={loading}
@@ -130,6 +157,8 @@ const Login = () => {
   >
     Register Here
   </Link>
+
+  
 
 </p>
 

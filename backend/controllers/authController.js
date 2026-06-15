@@ -1,6 +1,55 @@
-const Teacher = require("../models/Teacher")
-const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
+const Teacher =
+require("../models/Teacher");
+
+const bcrypt =
+require("bcryptjs");
+
+const jwt =
+require("jsonwebtoken");
+
+const nodemailer =
+require("nodemailer");
+
+const transporter =
+nodemailer.createTransport({
+
+  service: "gmail",
+
+  auth: {
+
+    user:
+      process.env.EMAIL_USER,
+      
+
+    pass:
+      process.env.EMAIL_PASS
+      
+  }
+});
+
+
+transporter.verify(
+  (error, success) => {
+
+    if (error) {
+
+      console.log(
+        "MAIL ERROR:",
+        error
+      );
+
+    } else {
+
+      console.log(
+        "Mail Server Ready"
+      );
+    }
+  }
+);
+
+
+
+
 
 const registerTeacher = async (req, res) => {
 
@@ -161,10 +210,191 @@ const getProfile = async (req, res) => {
   }
 };
 
+const forgotPassword =
+async (req, res) => {
+
+  try {
+
+    const { email } =
+      req.body;
+
+    const teacher =
+      await Teacher.findOne({
+        email
+      });
+
+    if (!teacher) {
+
+      return res.status(404)
+        .json({
+
+          message:
+          "Email not found"
+        });
+    }
+    
+    const otp =
+      Math.floor(
+        100000 +
+        Math.random() *
+        900000
+      ).toString();
+
+    teacher.otp = otp;
+
+    teacher.otpExpires =
+      Date.now() +
+      10 * 60 * 1000;
+
+    await teacher.save();
+
+    
+
+    await transporter.sendMail({
+
+      from:
+        process.env.EMAIL_USER,
+
+      to: email,
+
+      subject:
+        "Password Reset OTP",
+
+      text:
+        `Your OTP is ${otp}`
+    });
+
+    res.status(200).json({
+
+      message:
+      "OTP sent successfully"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message:
+      error.message
+    });
+  }
+};
+
+const verifyOtp =
+async (req, res) => {
+
+  try {
+
+    const {
+      email,
+      otp
+    } = req.body;
+
+    const teacher =
+      await Teacher.findOne({
+        email
+      });
+
+    if (
+      !teacher ||
+      teacher.otp !== otp
+    ) {
+
+      return res.status(400)
+        .json({
+
+          message:
+          "Invalid OTP"
+        });
+    }
+
+    if (
+      teacher.otpExpires <
+      Date.now()
+    ) {
+
+      return res.status(400)
+        .json({
+
+          message:
+          "OTP Expired"
+        });
+    }
+
+    res.status(200).json({
+
+      message:
+      "OTP Verified"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message:
+      error.message
+    });
+  }
+};
+
+const resetPassword =
+async (req, res) => {
+
+  try {
+
+    const {
+      email,
+      password
+    } = req.body;
+
+    const teacher =
+      await Teacher.findOne({
+        email
+      });
+
+    if (!teacher) {
+
+      return res.status(404)
+        .json({
+
+          message:
+          "Teacher not found"
+        });
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(
+        password,
+        10
+      );
+
+    teacher.password =
+      hashedPassword;
+
+    teacher.otp = "";
+    teacher.otpExpires = null;
+
+    await teacher.save();
+
+    res.status(200).json({
+
+      message:
+      "Password Updated"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message:
+      error.message
+    });
+  }
+};
+
 module.exports = {
   registerTeacher,
   loginTeacher,
   updateProfile,
-  getProfile
-
-}
+  getProfile,
+  forgotPassword,
+  verifyOtp,
+  resetPassword
+};

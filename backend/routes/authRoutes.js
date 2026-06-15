@@ -4,7 +4,10 @@ const {
   registerTeacher,
   loginTeacher,
   updateProfile,
-  getProfile
+  getProfile,
+  forgotPassword,
+  verifyOtp,
+  resetPassword
 } = require("../controllers/authController")
 
 const router = express.Router()
@@ -20,6 +23,21 @@ router.post(
   "/login",
   loginTeacher
 )
+
+router.post(
+  "/forgot-password",
+  forgotPassword
+);
+
+router.post(
+  "/verify-otp",
+  verifyOtp
+);
+
+router.post(
+  "/reset-password",
+  resetPassword
+);
 
 // Update Profile
 router.put(

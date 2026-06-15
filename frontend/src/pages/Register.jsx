@@ -7,11 +7,13 @@ import {
 
 import AuthLayout from "../layouts/AuthLayout";
 import { registerTeacher } from "../services/authService";
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const Register = () => {
 
   const navigate = useNavigate();
-
+  const [captchaValue, setCaptchaValue] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -20,11 +22,31 @@ const Register = () => {
     useState("");
 
   const [error, setError] = useState("");
-
+  
   const handleSubmit = async (e) => {
 
     e.preventDefault();
+    if (!captchaValue) {
 
+        alert(
+          "Please verify captcha"
+        );
+
+        return;
+      }
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+      if (
+        !passwordRegex.test(password)
+      ) {
+
+        setError(
+          "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number"
+        );
+
+        return;
+      }
     if (password !== confirmPassword) {
 
       setError(
@@ -143,13 +165,16 @@ const Register = () => {
           }
           className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
-        {/* <button
-          type="submit"
-          className="w-full bg-blue-700 hover:bg-blue-800 transition text-white py-3 rounded-xl font-semibold"
-        >
-          Register
-        </button> */}
+        <ReCAPTCHA
+          sitekey={
+            import.meta.env
+              .VITE_RECAPTCHA_SITE_KEY
+          }
+          onChange={(value) =>
+            setCaptchaValue(value)
+          }
+        />
+       
         <button
   type="submit"
   className="w-full bg-blue-700 hover:bg-blue-800 transition text-white py-3 rounded-xl font-semibold"

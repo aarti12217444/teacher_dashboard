@@ -14,6 +14,9 @@ import Classes from "../pages/Classes";
 import Attendance from "../pages/Attendance";
 import Assignments from "../pages/Assignments";
 import Performance from "../pages/Performance";
+import ForgotPassword from "../pages/ForgotPassword";
+import VerifyOtp from "../pages/VerifyOtp";
+import ResetPassword from "../pages/ResetPassword";
 
 import ProtectedRoute from "./ProtectedRoute"
 import MainLayout from "../layouts/MainLayout"
@@ -26,9 +29,17 @@ const AppRoutes = () => {
 
       <Routes>
 
-        
         <Route
-          path="/"
+  path="/"
+  element={
+    <Navigate
+      to="/login"
+      replace
+    />
+  }
+/>
+        <Route
+          path="/login"
           element={<Login />}
         />
 
@@ -108,6 +119,20 @@ const AppRoutes = () => {
       </MainLayout>
     </ProtectedRoute>
   }
+/>
+<Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
+
+<Route
+  path="/verify-otp"
+  element={<VerifyOtp />}
+/>
+
+<Route
+  path="/reset-password"
+  element={<ResetPassword />}
 />
 
         

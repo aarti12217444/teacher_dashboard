@@ -22,6 +22,15 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    otp: {
+      type: String,
+      default: ""
+    },
+
+    otpExpires: {
+      type: Date,
+      default: null
+    },
 
     phone: {
       type: String,
@@ -76,4 +85,4 @@ const teacherSchema = new mongoose.Schema(
 module.exports = mongoose.model(
   "Teacher",
   teacherSchema
-);
+);   

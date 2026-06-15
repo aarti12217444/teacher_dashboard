@@ -1,4 +1,4 @@
-# Teacher Management System
+# Teacher Management System(MERN Stack)
 
 A full-stack Teacher Management System built using React.js, Node.js, Express.js, and MongoDB.
 
@@ -367,15 +367,133 @@ and Axios base URL is correct.
 
 ---
 
-# Author
+# New Features Added
 
-Aarti Kumari
+## Security Features
 
-B.Tech CSE (Data Science)
+### Google reCAPTCHA
 
-Lovely Professional University
+* Bot Protection on Login
+* Bot Protection on Registration
+* Prevents Automated Attacks
+
+### Password Security
+
+* Minimum Password Length Validation
+* Encrypted Password Storage using bcryptjs
+
+### Forgot Password System
+
+* Email-based Password Recovery
+* OTP Generation
+* OTP Verification
+* Secure Password Reset
+
+### Email Service
+
+* Nodemailer Integration
+* Gmail App Password Authentication
+* OTP Delivery via Email
 
 ---
+
+# Additional Backend Packages
+
+```bash
+npm install nodemailer
+npm install bcryptjs
+npm install jsonwebtoken
+npm install multer
+npm install dotenv
+npm install cors
+npm install mongoose
+```
+
+---
+
+# Additional Frontend Packages
+
+```bash
+npm install react-google-recaptcha
+npm install react-router-dom
+npm install axios
+npm install react-icons
+```
+
+---
+
+# Authentication Flow
+
+Register
+→ Verify reCAPTCHA
+→ Create Account
+
+Login
+→ Verify reCAPTCHA
+→ Access Dashboard
+
+Forgot Password
+→ Enter Email
+→ Receive OTP
+→ Verify OTP
+→ Reset Password
+→ Login Again
+
+---
+
+# Environment Variables
+
+Backend `.env`
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+EMAIL_USER=your_gmail@gmail.com
+
+EMAIL_PASS=your_google_app_password
+```
+
+Frontend `.env`
+
+```env
+VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+```
+
+---
+
+# Security Implementations
+
+* JWT Authentication
+* Password Hashing (bcryptjs)
+* Google reCAPTCHA
+* Protected Routes
+* Environment Variables
+* OTP-Based Password Reset
+* Secure Email Authentication
+
+---
+
+# Current Version
+
+Version: 2.0
+
+Latest Updates:
+
+* Added Google reCAPTCHA
+* Added Forgot Password Feature
+* Added OTP Verification
+* Added Password Reset
+* Added Email Notifications
+* Improved Authentication Security
+* Added PDF Upload Support
+
+```
+```
+
 
 # Source Code
 

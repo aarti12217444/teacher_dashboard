@@ -17,7 +17,7 @@ require("./routes/attendanceRoutes");
 const assignmentRoutes =
 require("./routes/assignmentRoutes");
 
-require("dotenv").config()
+// require("dotenv").config()
 
 
 
